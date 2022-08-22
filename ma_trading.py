@@ -13,7 +13,7 @@ stock_info = tif.get_main_stock_info(stock_list)
 # ma_trading_strategy(tick, main_account_id, stock_info)
 
 
-def start_trading()
+def start_trading():
     """
     Каждые 15 минут (c 10.15 до 18.35) запускается стратегия, основанная на индикаторе Moving Average
     При сигнале на покупку происходит вход в позицию и проставляются stop_loss / take_profit
