@@ -1,7 +1,7 @@
 # ti_trading
 Traiding with API Tinkoff Invest
 
-Для начала работы необходимо заполнить lock_info.py, где
+Для начала работы необходимо заполнить lock_info_.py и переименовать в lock_info.py, где
 
 
 token = токен полного доступа,
