@@ -5,7 +5,7 @@ import lock_info
 
 main_account_id = lock_info.main_account_id
 stock_list = ['SBER', 'VTBR', 'SNGS', 'LKOH', 'GAZP', 'YNDX', 'TCSG', 'RUAL',
-               'PLZL', 'MAGN', 'POLY', 'MTSS', 'ROSN', 'MOEX', 'RTKM', 'TATN']
+              'PLZL', 'MAGN', 'POLY', 'MTSS', 'ROSN', 'MOEX', 'RTKM', 'TATN']
 
 stock_info = tif.get_main_stock_info(stock_list)
 
@@ -19,7 +19,7 @@ def start_trading():
     При сигнале на покупку происходит вход в позицию и проставляются stop_loss / take_profit
     """
     now = time.localtime()
-    while 10.15 < now.tm_hour + now.tm_hour/100 < 18.35:
+    while 10.15 < now.tm_hour + now.tm_min/100 < 18.35:
         now = time.localtime()
         print(f'Current time: {now.tm_hour:02}:{now.tm_min:02}:{now.tm_sec:02}')
 
