@@ -10,8 +10,8 @@ def ma_trading_strategy(tick, account_id, stock_info, tf='15m'):
     params = tif.load_yaml('best_ma_params')
     min_ma, max_ma, stop_loss_lvl = params[figi]['min_ma'], params[figi]['max_ma'], params[figi]['stop_loss']
 
-    # для 15м парсим свечи за последние 3 дня (только для возможности построения МА), убирая последнюю строку
-    data = tif.get_historical_info(figi, days=3)[:-1]
+    # для 15м парсим свечи за последние 10 дней (только для возможности построения МА), убирая последнюю строку
+    data = tif.get_historical_info(figi, days=10)[:-1]
     data = tif.ma_indicator(data, ma_fast=min_ma, ma_long=max_ma)  # добавляем МА
 
     print(f'size: {data.shape[0]}', end=' -> ')
@@ -40,8 +40,8 @@ def ma_trading_strategy(tick, account_id, stock_info, tf='15m'):
     cur_candle = tif.get_current_candle_15m(figi)
     cur_close = cur_candle['close']
 
-    #     n_round = 10-len(str(quotation_round.nano)) if quotation_round.nano>0 else 0 # округление цен для ордеров
-    round_features = tif.price_features(quotation_round.nano)  # свойства для округление цен
+    # свойства для округление цен
+    round_features = tif.price_features(quotation_round.nano)
 
     #################################################################################################
     print(f'to_buy: {to_buy}, signal: {signal}, cnt_lot: {cnt_lot}')
@@ -56,12 +56,14 @@ def ma_trading_strategy(tick, account_id, stock_info, tf='15m'):
 
         if lots_for_buy > 0:
             # лимитная заявка с уровнем покупки не выше тек.цена+погрешность
-            tif.order(figi, lots_for_buy, buy_price, account_id, round_features, direction='buy', order_type='limit')
-            #         tif.order(figi, lots_for_buy, buy_price, account_id, round_features, direction='buy', order_type='market')
-            tif.stop_order(figi, lots_for_buy, stop_loss, account_id, round_features, direction='sell',
-                           order_type='stop_loss')
-            tif.stop_order(figi, lots_for_buy, take_profit, account_id, round_features, direction='sell',
-                           order_type='take_profit')
+            tif.order(figi, lots_for_buy, buy_price, account_id, round_features,
+                            direction='buy', order_type='limit')
+            #         tif.order(figi, lots_for_buy, buy_price, account_id, round_features,
+            #             direction='buy', order_type='market')
+            tif.stop_order(figi, lots_for_buy, stop_loss, account_id, round_features,
+                          direction='sell', order_type='stop_loss')
+            tif.stop_order(figi, lots_for_buy, take_profit, account_id, round_features,
+                          direction='sell', order_type='take_profit')
 
             open_positions[tick] = {'lots': lots_for_buy, 'price': buy_price,
                                     'stop_loss': stop_loss, 'take_profit': take_profit}

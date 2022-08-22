@@ -114,7 +114,6 @@ def order(figi, lots, price, account_id, round_features, direction, order_type):
     print(r)
 
 
-# ордер на установку стоп-уровней
 def stop_order(figi, lots, price, account_id, round_features, direction, order_type):
     """
     Выставляет ордер на покупку/продажу по stop_loss/take_profit
